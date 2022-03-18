@@ -1,10 +1,8 @@
 N <- 8
 k <- 20
 
-#K_ <- 10 + k%/%4
-#L_ <- 18 - k%/%5
-K_ <- 3
-L_ <- 2
+K_ <- 10 + k%/%4
+L_ <- 18 - k%/%5
 
 A1 <- 8 + k%/%4
 A3 <- 3/2 + (k+1)%/%4
@@ -106,28 +104,37 @@ for(n_ in N:1){
 }
 #print(B[,,1])
 
-print(max(B[,,1]))
+cat("max sum (ans) = ", max(B[,,1]), '\n')
+
 
 cur_sum = max(B[,,1])
 
+cur_K <- 0
+cur_L <- 0
 
-for(n in 1:N+1){
-  print(B[,,n])
-  print(U[,,n,]) 
-  print('==========================')
+state <- c(0,0)
 
+for(n in 1:N){
+  #print('==========================')
+  #print(B[,,n])
+  #print(U[,,n,]) 
 
-  # cur_ans = which(B[,,n] == cur_sum, arr.ind = TRUE) 
-  # if(cur_ans[1] == 0 || cur_ans[2] == 0){
-  #   cat(0, ' ', 0, ' ', cur_sum, ' ', (FF[[n]](U[cur_ans[1],cur_ans[2], n,1], U[cur_ans[1],cur_ans[2], n, 2]))%/%1,  '\n')
-  #   continue
-  # }
+  #print(B[,,n] == cur_sum)
+  cur_state = which(B[,,n] == cur_sum, arr.ind = TRUE)[1,] 
+  # L K
+  #print(cur_state)
+  cur_K = cur_state[1] - state[1]  #-1
+  cur_L = cur_state[2] - state[2]  #-1
 
-  # print(B[,,n])
-  # cat(cur_ans[1]-1 , ' ', cur_ans[2]-1, ' ', cur_sum, '\n')
-  # cat(U[cur_ans[1],cur_ans[2], n,],  ' ', (FF[[n]](U[cur_ans[1],cur_ans[2], n,1], U[cur_ans[1],cur_ans[2], n, 2]))%/%1,  '\n')
+  #cat('cur_state = ', cur_state[1], cur_state[2], '\n')
+  #cat('B[cur_state, n] = ', B[cur_state[1], cur_state[2], n], '\ncur_K = ',cur_K, '\ncur_L = ', cur_L, '\n')
+  u <- U[cur_state[1],cur_state[2], n,]
   
-  # cur_sum = cur_sum - (FF[[n]](U[cur_ans[1],cur_ans[2], n,1], U[cur_ans[1],cur_ans[2], n, 2]))%/%1
+  #cat('state = ', state, '\n')
 
-  #cat(sum_k, ' ', sum_l, '\n\n\n')
+  cur_sum = cur_sum - (FF[[n]](u[1], u[2]))%/%1
+  #cat( 'u = ', u, '\ncur_sum = ', cur_sum,  '\n')
+  cat('n=', n, 'K_n =', u[1], 'L_n =', u[2], '\n')
+  state[1] = state[1] + u[1] +1
+  state[2] = state[2] + u[2] +1
 }
